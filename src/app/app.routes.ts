@@ -8,16 +8,19 @@ export const routes: Routes = [
     children: [
       {
         path: '',
+        pathMatch: 'full',
         loadComponent: () =>
           import('./main/main.component').then((m) => m.MainComponent),
       },
       {
         path: 'products',
+        pathMatch: 'full',
         loadComponent: () =>
           import('./products/products.component').then((m) => m.ProductsComponent),
       },
       {
         path: 'cart',
+        pathMatch: 'full',
         loadComponent: () =>
           import('./cart/cart.component').then((m) => m.CartComponent),
       },

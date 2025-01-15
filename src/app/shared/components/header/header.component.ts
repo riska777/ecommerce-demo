@@ -11,15 +11,15 @@ export class HeaderComponent {
   menuItems = [
     {
       label: 'Home',
-      url: '/',
+      routerLink: '/',
     },
     {
       label: 'Products',
-      url: '/products',
+      routerLink: '/products',
     },
     {
       label: 'Cart',
-      url: '/cart',
+      routerLink: '/cart',
     },
   ];
 }

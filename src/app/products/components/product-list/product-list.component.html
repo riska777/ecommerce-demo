@@ -1,0 +1,54 @@
+<p-dataview
+  #dv
+  [value]="products()"
+  [layout]="layout"
+  [sortField]="sortKey"
+  [sortOrder]="sortOrder"
+>
+  <ng-template #header>
+    <div class="flex justify-between items-center">
+      <p-select
+        [options]="sortOptions"
+        [(ngModel)]="sortKey"
+        placeholder="Sort By Price"
+        (onChange)="onSortChange($event)"
+        styleClass="mb-2 md:mb-0"
+      />
+      <p-selectbutton
+        [(ngModel)]="layout"
+        [options]="options"
+        [allowEmpty]="false"
+      >
+        <ng-template #item let-item>
+          <i
+            class="pi"
+            [ngClass]="{
+              'pi-bars': item === 'list',
+              'pi-table': item === 'grid'
+            }"
+          ></i>
+        </ng-template>
+      </p-selectbutton>
+    </div>
+  </ng-template>
+  <ng-template #list let-products>
+    <div *ngFor="let product of products; let first = first">
+      <app-product-list-item
+        [product]="product"
+        [first]="first"
+      ></app-product-list-item>
+    </div>
+  </ng-template>
+  <ng-template #grid let-items>
+    <div class="grid grid-cols-12 gap-4">
+      <div
+        *ngFor="let product of items"
+        class="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-6 p-2"
+      >
+        <app-product-list-grid-item
+          [product]="product"
+        ></app-product-list-grid-item>
+      </div>
+    </div>
+  </ng-template>
+</p-dataview>

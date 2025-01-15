@@ -7,6 +7,7 @@ import { provideStore } from '@ngrx/store';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { provideHttpClient } from '@angular/common/http';
+import { AsyncPipe } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
