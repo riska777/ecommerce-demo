@@ -9,8 +9,8 @@
       [alt]="product.name"
     />
     <p-tag
-      [value]="availableAmountToStockLabel(product)"
-      [severity]="getSeverity(product)"
+      [value]="productUtils.availableAmountToStockLabel(product) + ' ' + product.availableAmount"
+      [severity]="productUtils.getSeverity(product)"
       class="absolute"
       [style.left.px]="4"
       [style.top.px]="4"
@@ -49,9 +49,10 @@
         <button
           pButton
           icon="pi pi-shopping-cart"
-          label="Buy Now"
+          label="Add to Cart"
           [disabled]="product.availableAmount === 0"
           class="flex-auto md:flex-initial whitespace-nowrap"
+          (click)="addToCart(product)"
         ></button>
       </div>
     </div>

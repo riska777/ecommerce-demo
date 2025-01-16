@@ -1,6 +1,6 @@
 <p-dataview
   #dv
-  [value]="products()"
+  [value]="storeService.products()"
   [layout]="layout"
   [sortField]="sortKey"
   [sortOrder]="sortOrder"
@@ -32,21 +32,23 @@
     </div>
   </ng-template>
   <ng-template #list let-products>
-    <div *ngFor="let product of products; let first = first">
+    <div *ngFor="let product of products; let first = first; trackBy: trackById">
       <app-product-list-item
         [product]="product"
         [first]="first"
+        (onAddToCart)="addToCart($event)"
       ></app-product-list-item>
     </div>
   </ng-template>
   <ng-template #grid let-items>
     <div class="grid grid-cols-12 gap-4">
       <div
-        *ngFor="let product of items"
+        *ngFor="let product of items; trackBy: trackById"
         class="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-6 p-2"
       >
         <app-product-list-grid-item
           [product]="product"
+          (onAddToCart)="addToCart($event)"
         ></app-product-list-grid-item>
       </div>
     </div>

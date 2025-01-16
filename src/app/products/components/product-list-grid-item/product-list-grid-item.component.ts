@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Product } from '../../interfaces/product.interface';
 
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
+import { ProductUtils } from '../../utils/product.utils';
 
 @Component({
   selector: 'app-product-list-grid-item',
@@ -15,35 +16,11 @@ export class ProductListGridItemComponent {
   @Input() product!: Product;
   @Input() first!: boolean;
 
-  availableAmountToStockLabel(product: Product): string {
-    if (product.availableAmount === undefined) {
-      return 'Out of stock';
-    }
-    if (product.availableAmount === 0) {
-      return 'Out of stock';
-    }
-    if (product.availableAmount < 100) {
-      return 'Low stock';
-    }
-    if (product.availableAmount >= 100) {
-      return 'In stock';
-    }
-    return 'Out of stock';
-  }
+  @Output() onAddToCart: EventEmitter<Product> = new EventEmitter<Product>();
 
-  getSeverity(product: Product): 'success' | 'warn' | 'danger' | undefined {
-    if (product.availableAmount === undefined) {
-      return undefined;
-    }
-    if (product.availableAmount < 100) {
-      return 'warn';
-    }
-    if (product.availableAmount === 0) {
-      return 'danger';
-    }
-    if (product.availableAmount >= 100) {
-      return 'success';
-    }
-    return;
+  productUtils = ProductUtils;
+
+  addToCart(product: Product) {
+    this.onAddToCart.emit(product);
   }
 }

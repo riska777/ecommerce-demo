@@ -1,1 +1,5 @@
-<p>cart works!</p>
+<ul>
+    <li *ngFor="let cartItem of cartService.cart()">
+        {{ cartItem.name }}, {{ cartItem.price | currency : "USD" }}, {{ cartItem.quantity}}
+    </li>
+</ul>
