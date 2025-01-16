@@ -3,3 +3,5 @@
         {{ cartItem.name }}, {{ cartItem.price | currency : "USD" }}, {{ cartItem.quantity}}
     </li>
 </ul>
+
+<p-button label="Empty Cart" (click)="emptyCart()" />

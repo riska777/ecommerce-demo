@@ -2,10 +2,7 @@ import { Product } from '../interfaces/product.interface';
 
 export namespace ProductUtils {
   export function availableAmountToStockLabel(product: Product): string {
-    if (product.availableAmount === undefined) {
-      return 'Out of stock';
-    }
-    if (product.availableAmount === 0) {
+    if (product.availableAmount === undefined || product.availableAmount === 0) {
       return 'Out of stock';
     }
     if (product.availableAmount < 100) {
