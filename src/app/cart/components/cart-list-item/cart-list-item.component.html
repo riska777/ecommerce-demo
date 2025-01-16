@@ -8,13 +8,6 @@
       [src]="product.img"
       [alt]="product.name"
     />
-    <p-tag
-      [value]="productUtils.availableAmountToStockLabel(product) + ' ' + product.availableAmount"
-      [severity]="productUtils.getSeverity(product)"
-      class="absolute"
-      [style.left.px]="4"
-      [style.top.px]="4"
-    />
   </div>
   <div
     class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6"
@@ -41,18 +34,18 @@
       </div>
     </div>
     <div class="flex flex-col md:items-end gap-8">
-      <span class="text-xl font-semibold">{{
-        product.price | currency : "USD"
-      }}</span>
+      <span class="text-xl font-semibold">
+        {{ product.price | currency : "USD" }} / Quantity:
+        {{ product.quantity }}
+      </span>
       <div class="flex flex-row-reverse md:flex-row gap-2">
         <button pButton icon="pi pi-heart" class="p-button-outlined"></button>
         <button
           pButton
-          icon="pi pi-shopping-cart"
-          label="Add to Cart"
-          [disabled]="product.availableAmount === 0"
+          icon="pi pi-delete"
+          label="Remove from Cart"
           class="flex-auto md:flex-initial whitespace-nowrap"
-          (click)="addToCart()"
+          (click)="removeFromCart()"
         ></button>
       </div>
     </div>

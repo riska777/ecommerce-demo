@@ -1,7 +1,2 @@
-<ul>
-    <li *ngFor="let cartItem of cartService.cart()">
-        {{ cartItem.name }}, {{ cartItem.price | currency : "USD" }}, {{ cartItem.quantity}}
-    </li>
-</ul>
-
+<app-cart-list></app-cart-list>
 <p-button label="Empty Cart" (click)="emptyCart()" />

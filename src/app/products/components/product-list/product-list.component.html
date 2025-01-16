@@ -32,7 +32,7 @@
     </div>
   </ng-template>
   <ng-template #list let-products>
-    <div *ngFor="let product of products; let first = first; trackBy: trackById">
+    <div *ngFor="let product of products; let first = first; trackBy: sharedUtils.trackById">
       <app-product-list-item
         [product]="product"
         [first]="first"
@@ -43,7 +43,7 @@
   <ng-template #grid let-items>
     <div class="grid grid-cols-12 gap-4">
       <div
-        *ngFor="let product of items; trackBy: trackById"
+        *ngFor="let product of items; trackBy: sharedUtils.trackById"
         class="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-6 p-2"
       >
         <app-product-list-grid-item

@@ -1,0 +1,15 @@
+<p-dataview
+  #dv
+  [layout]="'list'"
+  [value]="cartService.cart()"
+>
+  <ng-template #list let-products>
+    <div *ngFor="let product of products; let first = first; trackBy: sharedUtils.trackById">
+        <app-cart-list-item
+            [product]="product"
+            [first]="first"
+            (onRemoveFromCart)="removeFromCart($event)"
+        ></app-cart-list-item>
+    </div>
+  </ng-template>
+</p-dataview>

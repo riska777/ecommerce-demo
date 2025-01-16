@@ -1,10 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { Product } from '../../products/interfaces/product.interface';
 import { StoreService } from '../../shared/services/store.service';
+import { CartItem } from '../interfaces/cart-item.interface';
 
-export interface CartItem extends Product {
-  quantity: number;
-}
 @Injectable({
   providedIn: 'root',
 })
@@ -50,9 +48,9 @@ export class CartService {
   }
 
   // Remove an item from the cart
-  removeFromCart(productId: string): void {
+  removeFromCart(product: CartItem): void {
     this.cart.update((currentCart) => {
-      const updatedCart = currentCart.filter((item) => item.id !== productId);
+      const updatedCart = currentCart.filter((item) => item.id !== product.id);
       this.saveCartToStorage();
       return updatedCart;
     });

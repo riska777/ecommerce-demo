@@ -13,6 +13,7 @@ import { ProductListGridItemComponent } from '../product-list-grid-item/product-
 import { StoreService } from '../../../shared/services/store.service';
 import { Product } from '../../interfaces/product.interface';
 import { CartService } from '../../../cart/services/cart.service';
+import { SharedUtils } from '../../../shared/utils/shared.utils';
 
 @Component({
   selector: 'app-product-list',
@@ -29,6 +30,8 @@ import { CartService } from '../../../cart/services/cart.service';
   styleUrl: './product-list.component.scss',
 })
 export class ProductListComponent implements OnInit {
+  readonly sharedUtils = SharedUtils;
+
   layout: 'list' | 'grid' = 'list';
   options = ['list', 'grid'];
   sortOptions: SelectItem[] = [
@@ -69,9 +72,5 @@ export class ProductListComponent implements OnInit {
     } else {
       console.log('Product is not available');
     }
-  }
-
-  trackById(index: number, product: any): number {
-    return product.id; // Use a unique identifier for each product
   }
 }

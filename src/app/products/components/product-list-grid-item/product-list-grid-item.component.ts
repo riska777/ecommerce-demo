@@ -20,7 +20,7 @@ export class ProductListGridItemComponent {
 
   productUtils = ProductUtils;
 
-  addToCart(product: Product) {
-    this.onAddToCart.emit(product);
+  addToCart(): void {
+    this.onAddToCart.emit(this.product);
   }
 }

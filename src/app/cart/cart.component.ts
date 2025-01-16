@@ -3,10 +3,11 @@ import { CartService } from './services/cart.service';
 import { CommonModule } from '@angular/common';
 
 import { ButtonModule } from 'primeng/button';
+import { CartListComponent } from './components/cart-list/cart-list.component';
 
 @Component({
   selector: 'app-cart',
-  imports: [ButtonModule, CommonModule],
+  imports: [CartListComponent, ButtonModule, CommonModule],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })
