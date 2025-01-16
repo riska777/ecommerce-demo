@@ -1,15 +1,32 @@
-<p-dataview
-  #dv
-  [layout]="'list'"
-  [value]="cartService.cart()"
->
-  <ng-template #list let-products>
-    <div *ngFor="let product of products; let first = first; trackBy: sharedUtils.trackById">
+<section class="card rounded-md overflow-hidden">
+  <p-dataview
+    #dv
+    [layout]="'list'"
+    [value]="cartService.cart()"
+    class="rounded"
+  >
+    <ng-template #list let-products>
+      <div
+        *ngFor="
+          let product of products;
+          let first = first;
+          trackBy: sharedUtils.trackById
+        "
+      >
         <app-cart-list-item
-            [product]="product"
-            [first]="first"
-            (onRemoveFromCart)="removeFromCart($event)"
+          [product]="product"
+          [first]="first"
+          (onRemoveFromCart)="removeFromCart($event)"
         ></app-cart-list-item>
-    </div>
-  </ng-template>
-</p-dataview>
+      </div>
+    </ng-template>
+    <ng-template #emptymessage let-columns>
+        <div class="p-4">
+            Sad Little Empty Cart...
+        </div>
+    </ng-template>
+  </p-dataview>
+  <div class="text-right text-2xl px-4 py-2">
+    Total: {{ cartTotalPrice() | currency : "USD" }}
+  </div>
+</section>

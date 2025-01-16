@@ -24,11 +24,11 @@ export class CartService {
   }
 
   // Save cart data to localStorage
-  private saveCartToStorage(): void {
-    localStorage.setItem(this.storageKey, JSON.stringify(this.cart()));
+  private saveCartToStorage(updatedCart?: CartItem[]): void {
+    localStorage.removeItem(this.storageKey);
+    localStorage.setItem(this.storageKey, JSON.stringify(updatedCart ? updatedCart : this.cart()));
   }
 
-  // Add an item to the cart
   addToCart(product: Product, quantity: number): void {
     this.cart.update((currentCart) => {
       const existingProduct = currentCart.find(
@@ -47,18 +47,40 @@ export class CartService {
     });
   }
 
-  // Remove an item from the cart
   removeFromCart(product: CartItem): void {
     this.cart.update((currentCart) => {
       const updatedCart = currentCart.filter((item) => item.id !== product.id);
-      this.saveCartToStorage();
+      console.log(updatedCart);
+      this.saveCartToStorage(updatedCart);
       return updatedCart;
     });
   }
 
-  // Clear the cart
   clearCart(): void {
     this.cart.set([]);
     this.saveCartToStorage();
+  }
+
+  /* If the cart has more items than available, then it reduces the quantity, 
+    and also decrements store value 
+  */
+  reduceCartItemQuantity(): void {
+    this.cart.update((currentCart) => {
+      for (const cartItem of currentCart) {
+        const availableAmount = this.storeService.getProductAmount(cartItem);
+        if (cartItem.quantity >= availableAmount) {
+          cartItem.quantity = availableAmount;
+        }
+        this.storeService.decrementProductAmount(cartItem, cartItem.quantity);
+      }
+
+      this.saveCartToStorage();
+      return currentCart;
+    });
+  }
+
+  cartTotalPrice(): number {
+    return this.cart().reduce(
+      (total, product) => total + product.price * product.quantity, 0);
   }
 }

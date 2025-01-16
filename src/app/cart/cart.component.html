@@ -1,2 +1,12 @@
 <app-cart-list></app-cart-list>
-<p-button label="Empty Cart" (click)="emptyCart()" />
+<div class="flex justify-center mt-6 items-center gap-4">
+  <button
+    pButton
+    pRipple
+    type="button"
+    label="Empty Cart"
+    class="p-button-outlined p-button-warning"
+    (click)="emptyCart()"
+  ></button>
+  <p-button label="Reduce Amount" (click)="reduceCartItemQuantity()" />
+</div>

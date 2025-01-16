@@ -16,7 +16,6 @@ export const routes: Routes = [
       {
         path: 'products',
         pathMatch: 'full',
-        resolve: { products: productListResolver },
         loadComponent: () =>
           import('./products/products.component').then((m) => m.ProductsComponent),
       },

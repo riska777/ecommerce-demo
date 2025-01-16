@@ -17,4 +17,8 @@ export class CartComponent {
   emptyCart(): void {
     this.cartService.clearCart();
   }
+
+  reduceCartItemQuantity(): void {
+    this.cartService.reduceCartItemQuantity();
+  }
 }

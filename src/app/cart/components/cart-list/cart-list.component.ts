@@ -27,6 +27,10 @@ export class CartListComponent {
     this.cartService.removeFromCart(product);
   }
 
+  cartTotalPrice(): number {
+    return this.cartService.cartTotalPrice();
+  }
+
   /* TODO:
     Check for cart item minimal quantity, display buttons accordingly
   */

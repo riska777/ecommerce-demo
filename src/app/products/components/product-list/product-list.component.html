@@ -1,56 +1,67 @@
-<p-dataview
-  #dv
-  [value]="this.storeService.products()"
-  [layout]="layout"
-  [sortField]="sortKey"
-  [sortOrder]="sortOrder"
->
-  <ng-template #header>
-    <div class="flex justify-between items-center">
-      <p-select
-        [options]="sortOptions"
-        [(ngModel)]="sortKey"
-        placeholder="Sort By Price"
-        (onChange)="onSortChange($event)"
-        styleClass="mb-2 md:mb-0"
-      />
-      <p-selectbutton
-        [(ngModel)]="layout"
-        [options]="options"
-        [allowEmpty]="false"
-      >
-        <ng-template #item let-item>
-          <i
-            class="pi"
-            [ngClass]="{
-              'pi-bars': item === 'list',
-              'pi-table': item === 'grid'
-            }"
-          ></i>
-        </ng-template>
-      </p-selectbutton>
-    </div>
-  </ng-template>
-  <ng-template #list let-products>
-    <div *ngFor="let product of products; let first = first; trackBy: sharedUtils.trackById">
-      <app-product-list-item
-        [product]="product"
-        [first]="first"
-        (onAddToCart)="addToCart($event)"
-      ></app-product-list-item>
-    </div>
-  </ng-template>
-  <ng-template #grid let-items>
-    <div class="grid grid-cols-12 gap-4">
-      <div
-        *ngFor="let product of items; trackBy: sharedUtils.trackById"
-        class="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-6 p-2"
-      >
-        <app-product-list-grid-item
-          [product]="product"
-          (onAddToCart)="addToCart($event)"
-        ></app-product-list-grid-item>
+<section class="card rounded-md overflow-hidden">
+  <p-dataview
+    #dv
+    [value]="this.storeService.products()"
+    [layout]="layout"
+    [sortField]="sortKey"
+    [sortOrder]="sortOrder"
+  >
+    <ng-template #header>
+      <div class="flex justify-between items-center">
+        <p-select
+          [options]="sortOptions"
+          [(ngModel)]="sortKey"
+          placeholder="Sort By Price"
+          (onChange)="onSortChange($event)"
+          styleClass="mb-2 md:mb-0"
+        />
+        <p-selectbutton
+          [(ngModel)]="layout"
+          [options]="options"
+          [allowEmpty]="false"
+        >
+          <ng-template #item let-item>
+            <i
+              class="pi"
+              [ngClass]="{
+                'pi-bars': item === 'list',
+                'pi-table': item === 'grid'
+              }"
+            ></i>
+          </ng-template>
+        </p-selectbutton>
       </div>
-    </div>
-  </ng-template>
-</p-dataview>
+    </ng-template>
+    <ng-template #list let-products>
+      <div
+        *ngFor="
+          let product of products;
+          let first = first;
+          trackBy: sharedUtils.trackById
+        "
+      >
+        <app-product-list-item
+          [product]="product"
+          [first]="first"
+          (onAddToCart)="addToCart($event)"
+        ></app-product-list-item>
+      </div>
+    </ng-template>
+    <ng-template #grid let-items>
+      <div class="grid grid-cols-12 gap-4">
+        <div
+          *ngFor="let product of items; trackBy: sharedUtils.trackById"
+          class="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-6 p-2"
+        >
+          <app-product-list-grid-item
+            [product]="product"
+            (onAddToCart)="addToCart($event)"
+          ></app-product-list-grid-item>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template #emptymessage let-columns>
+      <app-skeleton-list></app-skeleton-list>
+    </ng-template>
+  </p-dataview>
+</section>

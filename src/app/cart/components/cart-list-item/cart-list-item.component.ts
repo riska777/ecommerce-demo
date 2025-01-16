@@ -33,4 +33,8 @@ export class CartListItemComponent {
   checkAvailableQuantity(): Observable<boolean> {
     return this.storeService.checkAvailableQuantity(this.product);
   }
+
+  checkIfMinimalQuantityReached(): Observable<boolean> {
+    return this.storeService.checkIfMinimalQuantityReached(this.product);
+  }
 }
