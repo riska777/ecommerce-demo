@@ -1,14 +1,18 @@
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
+import { MessageModule } from 'primeng/message';
+
 import { ProductUtils } from '../../../products/utils/product.utils';
 import { CartItem } from '../../interfaces/cart-item.interface';
-import { CommonModule } from '@angular/common';
+import { StoreService } from '../../../shared/services/store.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-cart-list-item',
-  imports: [TagModule, ButtonModule, CommonModule],
+  imports: [TagModule, ButtonModule, CommonModule, MessageModule, AsyncPipe],
   templateUrl: './cart-list-item.component.html',
   styleUrl: './cart-list-item.component.scss'
 })
@@ -20,7 +24,13 @@ export class CartListItemComponent {
 
   productUtils = ProductUtils;
 
+  constructor(private storeService: StoreService) {}
+
   removeFromCart(): void {
     this.onRemoveFromCart.emit(this.product);
+  }
+
+  checkAvailableQuantity(): Observable<boolean> {
+    return this.storeService.checkAvailableQuantity(this.product);
   }
 }

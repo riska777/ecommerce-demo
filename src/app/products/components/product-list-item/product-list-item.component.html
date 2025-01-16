@@ -9,7 +9,7 @@
       [alt]="product.name"
     />
     <p-tag
-      [value]="productUtils.availableAmountToStockLabel(product) + ' ' + product.availableAmount"
+      [value]="productUtils.availableAmountToStockLabel(product) + ': ' + product.availableAmount"
       [severity]="productUtils.getSeverity(product)"
       class="absolute"
       [style.left.px]="4"

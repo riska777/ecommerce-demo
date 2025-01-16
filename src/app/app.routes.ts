@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './shared/layout/main-layout/main-layout.component';
+import { productListResolver } from './products/resolvers/product-list.resolver';
 
 export const routes: Routes = [
   {
@@ -15,12 +16,14 @@ export const routes: Routes = [
       {
         path: 'products',
         pathMatch: 'full',
+        resolve: { products: productListResolver },
         loadComponent: () =>
           import('./products/products.component').then((m) => m.ProductsComponent),
       },
       {
         path: 'cart',
         pathMatch: 'full',
+        resolve: { products: productListResolver },
         loadComponent: () =>
           import('./cart/cart.component').then((m) => m.CartComponent),
       },

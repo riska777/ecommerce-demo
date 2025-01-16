@@ -1,11 +1,15 @@
 import { Injectable, signal } from '@angular/core';
 import { Product } from '../../products/interfaces/product.interface';
+import { CartItem } from '../../cart/interfaces/cart-item.interface';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StoreService {
   products = signal<Product[]>([]);
+
+  constructor() {}
 
   setProducts(products: Product[]): void {
     if (!this.products().length) {
@@ -25,5 +29,18 @@ export class StoreService {
           : storeProduct
       )
     );
+  }
+
+  checkAvailableQuantity(cartItem: CartItem): Observable<boolean> {
+    if (this.products().length) {
+      return of(this.isProductAvailableInStore(cartItem));
+    } else {
+      return of(false);
+    }
+  }
+
+  private isProductAvailableInStore(cartItem: CartItem): boolean {
+    const storeProduct = this.products().find((storeProduct) => storeProduct.id === cartItem.id);
+    return storeProduct ? storeProduct.availableAmount >= cartItem.quantity : false;
   }
 }
