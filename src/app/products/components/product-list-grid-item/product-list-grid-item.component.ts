@@ -29,6 +29,7 @@ export class ProductListGridItemComponent implements OnInit {
   }
 
   addToCart(): void {
+    if (!this.quantity) return;
     this.onAddToCart.emit({ product: this.product, quantity: this.quantity });
   }
 }

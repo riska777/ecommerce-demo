@@ -51,7 +51,7 @@ export class ProductListComponent {
   ) {}
 
   ngOnInit() {
-    if (!this.storeService.products().length) {
+    if (!this.storeService.products()?.length) {
       this.productsService.getProducts().subscribe((products: Product[]) => {
         this.storeService.setProducts(products);
         this.cartService.reduceCartItemQuantity();
