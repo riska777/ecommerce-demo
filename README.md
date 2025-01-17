@@ -13,6 +13,8 @@ The quantity cannot be lower than 0 and cannot be higher than the available amou
 You can toggle the type of view between 'List' and 'Grid', and you can also sort the list by Price High or Low first.
 When max amount of an item is put in the cart, the "Add to Cart" button gets disabled, as well as the quantity input.
 
+In the products list, the product list element display availability with different severity levels in the top left of the product image.
+
 When navigating to Cart page, the productsResolver checks if we have a product list and also if we have a cart with items,
 it reduces the quantity if it is higher than the available amount, and reduces the available amount in the store.
 The productsResolver also syncs cart prices with store, so for existing products the prices displayed will be always in sync with fetched prices.
