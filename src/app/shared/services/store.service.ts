@@ -26,7 +26,7 @@ export class StoreService {
       products.map((storeProduct) =>
         storeProduct.id === product.id &&
         storeProduct.availableAmount >= quantity
-          ? { ...product, availableAmount: product.availableAmount - quantity }
+          ? { ...storeProduct, availableAmount: product.availableAmount - quantity }
           : storeProduct
       )
     );
@@ -46,6 +46,13 @@ export class StoreService {
       (storeProduct) => storeProduct.id === product.id
     );
     return storeProduct ? storeProduct.availableAmount : 0;
+  }
+
+  getProductPrice(cartItem: CartItem): number {
+    const storeProduct = this.products().find(
+      (storeProduct) => storeProduct.id === cartItem.id
+    );
+    return storeProduct ? storeProduct.price : 0;
   }
 
   private isProductAvailableInStore(cartItem: CartItem): boolean {

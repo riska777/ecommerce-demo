@@ -50,7 +50,6 @@ export class CartService {
   removeFromCart(product: CartItem): void {
     this.cart.update((currentCart) => {
       const updatedCart = currentCart.filter((item) => item.id !== product.id);
-      console.log(updatedCart);
       this.saveCartToStorage(updatedCart);
       return updatedCart;
     });
@@ -82,5 +81,17 @@ export class CartService {
   cartTotalPrice(): number {
     return this.cart().reduce(
       (total, product) => total + product.price * product.quantity, 0);
+  }
+
+  syncProductPriceWithStore(): void {
+    this.cart.update((currentCart) => {
+      const updatedCart = currentCart.map((cartItem) => {
+        cartItem.price = this.storeService.getProductPrice(cartItem);
+        return cartItem;
+      });
+
+      this.saveCartToStorage(updatedCart);
+      return updatedCart;
+    });
   }
 }

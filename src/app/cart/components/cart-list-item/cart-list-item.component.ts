@@ -14,13 +14,14 @@ import { Observable } from 'rxjs';
   selector: 'app-cart-list-item',
   imports: [TagModule, ButtonModule, CommonModule, MessageModule, AsyncPipe],
   templateUrl: './cart-list-item.component.html',
-  styleUrl: './cart-list-item.component.scss'
+  styleUrl: './cart-list-item.component.scss',
 })
 export class CartListItemComponent {
   @Input() product!: CartItem;
   @Input() first!: boolean;
 
-  @Output() onRemoveFromCart: EventEmitter<CartItem> = new EventEmitter<CartItem>();
+  @Output() onRemoveFromCart: EventEmitter<CartItem> =
+    new EventEmitter<CartItem>();
 
   productUtils = ProductUtils;
 

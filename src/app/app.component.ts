@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
-import Lara  from '@primeng/themes/lara';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +10,7 @@ import Lara  from '@primeng/themes/lara';
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  constructor(private primeng: PrimeNG) {
-    console.log('App component created');
-  }
+  constructor(private primeng: PrimeNG) {}
 
   ngOnInit() {
     this.primeng.ripple.set(true);
