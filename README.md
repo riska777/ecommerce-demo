@@ -27,6 +27,8 @@ Here you can also empty your cart, and there is also a button 'Reduce Amount', t
 
 The content of the cart is stored to localstorage also, and its being reloaded and synced with store when revisiting the application.
 
+We use service based store for simplicity, but if the app grows larger, we could use ngrx store for complexity.
+
 ## Development server
 
 To start a local development server, run:
