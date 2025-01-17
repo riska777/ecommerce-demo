@@ -14,8 +14,9 @@ export const productListResolver: ResolveFn<boolean> = async (route, state) => {
     const products = await firstValueFrom(productsService.getProducts());
     store.setProducts(products);
     cart.reduceCartItemQuantity();
-    cart.syncProductPriceWithStore();
   }
+
+  cart.syncProductPriceWithStore();
 
   return true;
 };

@@ -26,7 +26,10 @@ export class CartService {
   // Save cart data to localStorage
   private saveCartToStorage(updatedCart?: CartItem[]): void {
     localStorage.removeItem(this.storageKey);
-    localStorage.setItem(this.storageKey, JSON.stringify(updatedCart ? updatedCart : this.cart()));
+    localStorage.setItem(
+      this.storageKey,
+      JSON.stringify(updatedCart ? updatedCart : this.cart())
+    );
   }
 
   addToCart(product: Product, quantity: number): void {
@@ -80,7 +83,9 @@ export class CartService {
 
   cartTotalPrice(): number {
     return this.cart().reduce(
-      (total, product) => total + product.price * product.quantity, 0);
+      (total, product) => total + product.price * product.quantity,
+      0
+    );
   }
 
   syncProductPriceWithStore(): void {
