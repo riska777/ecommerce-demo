@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TagModule } from 'primeng/tag';
@@ -14,14 +14,19 @@ import { AddToCartEventInterface } from '../../interfaces/add-to-cart-event.inte
   templateUrl: './product-list-grid-item.component.html',
   styleUrl: './product-list-grid-item.component.scss',
 })
-export class ProductListGridItemComponent {
+export class ProductListGridItemComponent implements OnInit {
   @Input() product!: Product;
   @Input() first!: boolean;
 
-  @Output() onAddToCart: EventEmitter<AddToCartEventInterface> = new EventEmitter<AddToCartEventInterface>();
+  @Output() onAddToCart: EventEmitter<AddToCartEventInterface> =
+    new EventEmitter<AddToCartEventInterface>();
 
   productUtils = ProductUtils;
-  quantity = this.product?.availableAmount > 0 ? 1 : 0;
+  quantity = 0;
+
+  ngOnInit(): void {
+    this.quantity = this.product?.availableAmount > 0 ? 1 : 0;
+  }
 
   addToCart(): void {
     this.onAddToCart.emit({ product: this.product, quantity: this.quantity });

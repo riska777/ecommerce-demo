@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Product } from '../../interfaces/product.interface';
 import { CommonModule } from '@angular/common';
@@ -17,12 +17,12 @@ import { AddToCartEventInterface } from '../../interfaces/add-to-cart-event.inte
     TagModule,
     ButtonModule,
     FormsModule,
-    InputNumberModule
+    InputNumberModule,
   ],
   templateUrl: './product-list-item.component.html',
   styleUrl: './product-list-item.component.scss',
 })
-export class ProductListItemComponent {
+export class ProductListItemComponent implements OnInit {
   @Input() product!: Product;
   @Input() first!: boolean;
 
@@ -30,7 +30,11 @@ export class ProductListItemComponent {
     new EventEmitter<AddToCartEventInterface>();
 
   productUtils = ProductUtils;
-  quantity = this.product?.availableAmount > 0 ? 1 : 0;
+  quantity = 0;
+
+  ngOnInit(): void {
+    this.quantity = this.product?.availableAmount > 0 ? 1 : 0;
+  }
 
   addToCart(): void {
     this.onAddToCart.emit({ product: this.product, quantity: this.quantity });
