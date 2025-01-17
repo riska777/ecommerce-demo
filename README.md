@@ -6,6 +6,7 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 The Application starts on the home page.
 You can navigate to Products, and Cart.
+The Cart page is available in the top right of the menubar, which also displays the amount of types of products in the cart.
 
 When navigating to Products page, products are fetched from the backend, and stored to persist among components.
 Here you can add items to your cart in the specific amount set in the quantity number input field.
