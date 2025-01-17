@@ -6,7 +6,7 @@
   <div class="md:w-40 relative">
     <img
       class="block xl:block mx-auto rounded w-full"
-      [src]="product.img"
+      [src]="product.img" (error)="product.img = 'https://placehold.co/400'"
       [alt]="product.name"
     />
     <p-tag
