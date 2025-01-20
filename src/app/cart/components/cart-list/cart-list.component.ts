@@ -7,6 +7,7 @@ import { CartService } from '../../services/cart.service';
 import { CartListItemComponent } from '../cart-list-item/cart-list-item.component';
 import { CartItem } from '../../interfaces/cart-item.interface';
 import { SharedUtils } from '../../../shared/utils/shared.utils';
+import { StoreService } from '../../../shared/services/store.service';
 
 @Component({
   selector: 'app-cart-list',
@@ -18,7 +19,8 @@ export class CartListComponent {
   readonly sharedUtils = SharedUtils;
 
   constructor(
-    readonly cartService: CartService
+    readonly cartService: CartService,
+    readonly storeService: StoreService
   ) {}
 
   removeFromCart(product: CartItem): void {

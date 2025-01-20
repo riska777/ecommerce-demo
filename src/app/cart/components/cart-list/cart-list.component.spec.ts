@@ -4,6 +4,8 @@ import { CartListComponent } from './cart-list.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { CartService } from '../../services/cart.service';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('CartListComponent', () => {
   let component: CartListComponent;
@@ -20,6 +22,8 @@ describe('CartListComponent', () => {
       imports: [CartListComponent, BrowserModule],
       providers: [
         provideAnimations(),
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: CartService, useValue: cartServiceSpy },
       ],
     }).compileComponents();

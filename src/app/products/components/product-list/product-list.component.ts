@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -10,11 +10,9 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { ProductListItemComponent } from '../product-list-item/product-list-item.component';
 import { ProductListGridItemComponent } from '../product-list-grid-item/product-list-grid-item.component';
 import { StoreService } from '../../../shared/services/store.service';
-import { Product } from '../../interfaces/product.interface';
 import { CartService } from '../../../cart/services/cart.service';
 import { SharedUtils } from '../../../shared/utils/shared.utils';
 import { AddToCartEventInterface } from '../../interfaces/add-to-cart-event.interface';
-import { ProductsService } from '../../services/products.service';
 import { SkeletonListComponent } from '../../../shared/skeletons/skeleton-list/skeleton-list.component';
 
 @Component({
@@ -27,12 +25,12 @@ import { SkeletonListComponent } from '../../../shared/skeletons/skeleton-list/s
     SelectModule,
     SelectButtonModule,
     CommonModule,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
   layout: 'list' | 'grid' = 'list';
   options = ['list', 'grid'];
   sortOptions: SelectItem[] = [
@@ -46,17 +44,11 @@ export class ProductListComponent {
 
   constructor(
     private cartService: CartService,
-    private productsService: ProductsService,
     readonly storeService: StoreService
   ) {}
 
   ngOnInit() {
-    if (!this.storeService.products()?.length) {
-      this.productsService.getProducts().subscribe((products: Product[]) => {
-        this.storeService.setProducts(products);
-        this.cartService.reduceCartItemQuantity();
-      });
-    }
+    this.storeService.loadProducts();
   }
 
   onSortChange(event: any) {
@@ -72,8 +64,16 @@ export class ProductListComponent {
   }
 
   addToCart(addToCartEvent: AddToCartEventInterface) {
-    if (this.storeService.isProductAvailable(addToCartEvent.product, addToCartEvent.quantity)) {
-      this.cartService.addToCart(addToCartEvent.product, addToCartEvent.quantity);
+    if (
+      this.storeService.isProductAvailable(
+        addToCartEvent.product,
+        addToCartEvent.quantity
+      )
+    ) {
+      this.cartService.addToCart(
+        addToCartEvent.product,
+        addToCartEvent.quantity
+      );
     } else {
       console.log('Product is not available');
     }

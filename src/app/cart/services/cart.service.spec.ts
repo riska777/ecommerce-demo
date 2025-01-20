@@ -3,10 +3,11 @@ import { CartService } from './cart.service';
 import { StoreService } from '../../shared/services/store.service';
 import { Product } from '../../products/interfaces/product.interface';
 import { CartItem } from '../interfaces/cart-item.interface';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
 
 describe('CartService', () => {
+  let service: CartService;
+  let storeServiceSpy: jasmine.SpyObj<StoreService>;
+
   const mockProduct: Product = {
     id: '1',
     name: 'Test Product 1',
@@ -26,96 +27,116 @@ describe('CartService', () => {
     quantity: 2,
   };
 
-  let cartService: CartService;
-  let storeService: jasmine.SpyObj<StoreService>;
-
   beforeEach(() => {
-    const storeServiceSpy = jasmine.createSpyObj('StoreService', [
+    const spy = jasmine.createSpyObj('StoreService', [
       'decrementProductAmount',
-      'getProductAmount',
-      'getProductPrice',
+      'saveCartToStorage',
     ]);
+    spy._cart = {
+      update: jasmine.createSpy('update'),
+      set: jasmine.createSpy('set'),
+    };
 
     TestBed.configureTestingModule({
-      imports: [BrowserModule],
-      providers: [
-        CartService,
-        provideAnimations(),
-        { provide: StoreService, useValue: storeServiceSpy },
-      ],
+      providers: [CartService, { provide: StoreService, useValue: spy }],
     });
 
-    cartService = TestBed.inject(CartService);
-    storeService = TestBed.inject(StoreService) as jasmine.SpyObj<StoreService>;
-    cartService.clearCart();
-    localStorage.clear();
+    service = TestBed.inject(CartService);
+    storeServiceSpy = TestBed.inject(
+      StoreService
+    ) as jasmine.SpyObj<StoreService>;
   });
 
   it('should be created', () => {
-    expect(CartService).toBeTruthy();
+    expect(service).toBeTruthy();
   });
 
   it('should add a product to the cart', () => {
     const product: Product = { ...mockProduct };
-    cartService.addToCart(product, 2);
-    expect(cartService.cart().length).toBe(1);
-    expect(cartService.cart()[0].quantity).toBe(2);
-    expect(storeService.decrementProductAmount).toHaveBeenCalledWith(
-      product,
-      2
+    const quantity = 2;
+    const currentCart: CartItem[] = [];
+
+    (storeServiceSpy._cart.update as jasmine.Spy).and.callFake(
+      (callback: (cart: CartItem[]) => CartItem[]) => {
+        const updatedCart = callback(currentCart);
+        expect(updatedCart.length).toBe(1);
+        expect(updatedCart[0].id).toBe(product.id);
+        expect(updatedCart[0].quantity).toBe(quantity);
+        return updatedCart;
+      }
     );
+
+    service.addToCart(product, quantity);
+
+    expect(storeServiceSpy._cart.update).toHaveBeenCalled();
+    expect(storeServiceSpy.decrementProductAmount).toHaveBeenCalledWith(
+      product,
+      quantity
+    );
+    expect(storeServiceSpy.saveCartToStorage).toHaveBeenCalled();
+  });
+
+  it('should update the quantity of an existing product in the cart', () => {
+    const product: Product = { ...mockProduct };
+    const quantity = 2;
+    const currentCart: CartItem[] = [{ ...mockCartItem, quantity: 1 }];
+
+    (storeServiceSpy._cart.update as jasmine.Spy).and.callFake(
+      (callback: (cart: CartItem[]) => CartItem[]) => {
+        const updatedCart = callback(currentCart);
+        expect(updatedCart.length).toBe(1);
+        expect(updatedCart[0].id).toBe(product.id);
+        expect(updatedCart[0].quantity).toBe(3);
+        return updatedCart;
+      }
+    );
+
+    service.addToCart(product, quantity);
+
+    expect(storeServiceSpy._cart.update).toHaveBeenCalled();
+    expect(storeServiceSpy.decrementProductAmount).toHaveBeenCalledWith(
+      product,
+      quantity
+    );
+    expect(storeServiceSpy.saveCartToStorage).toHaveBeenCalled();
   });
 
   it('should remove a product from the cart', () => {
     const product: CartItem = { ...mockCartItem };
-    cartService.addToCart(product, 2);
-    cartService.removeFromCart(product);
 
-    expect(cartService.cart().length).toBe(0);
+    const currentCart: CartItem[] = [{ ...product }];
+
+    (storeServiceSpy._cart.update as jasmine.Spy).and.callFake(
+      (callback: (cart: CartItem[]) => CartItem[]) => {
+        const updatedCart = callback(currentCart);
+        expect(updatedCart.length).toBe(0);
+        return updatedCart;
+      }
+    );
+
+    service.removeFromCart(product);
+
+    expect(storeServiceSpy._cart.update).toHaveBeenCalled();
+    expect(storeServiceSpy.saveCartToStorage).toHaveBeenCalled
   });
 
   it('should clear the cart', () => {
-    const product: Product = { ...mockProduct };
-    cartService.addToCart(product, 2);
-    cartService.clearCart();
+    service.clearCart();
 
-    expect(cartService.cart().length).toBe(0);
-  });
-
-  it('should reduce cart item quantity based on available amount', () => {
-    const product: CartItem = { ...mockCartItem };
-    const productQuantityAddedToCart = 5;
-    cartService.addToCart(product, productQuantityAddedToCart);
-    storeService.getProductAmount.and.returnValue(3);
-    cartService.reduceCartItemQuantity();
-
-    expect(cartService.cart()[0].quantity).toBe(3);
-    expect(storeService.decrementProductAmount).toHaveBeenCalledWith(
-      product,
-      productQuantityAddedToCart
-    );
+    expect(storeServiceSpy._cart.set).toHaveBeenCalledWith([]);
+    expect(storeServiceSpy.saveCartToStorage).toHaveBeenCalled();
   });
 
   it('should calculate the total price of the cart', () => {
-    const product1: Product = { ...mockProduct };
-    const product2: Product = {
-      ...mockProduct,
-      id: '2',
-      name: 'Product 2',
-      price: 200,
-    };
-    cartService.addToCart(product1, 2);
-    cartService.addToCart(product2, 1);
+    const currentCart: CartItem[] = [
+      { ...mockCartItem, quantity: 1, price: 200 },
+      { ...mockCartItem, id: '2', quantity: 2 },
+    ];
 
-    expect(cartService.cartTotalPrice()).toBe(400);
-  });
+    (storeServiceSpy.cart as CartItem[]) = currentCart;
 
-  it('should sync product prices with the store', () => {
-    const product: CartItem = { ...mockCartItem};
-    storeService.getProductPrice.and.returnValue(150);
-    cartService.addToCart(product, 2);
-    cartService.syncProductPriceWithStore();
+    const totalPrice = service.cartTotalPrice();
 
-    expect(cartService.cart()[0].price).toBe(150);
+    expect(totalPrice).toBe(400);
   });
 });

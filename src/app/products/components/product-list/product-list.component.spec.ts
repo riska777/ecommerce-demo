@@ -26,7 +26,7 @@ describe('ProductListComponent', () => {
   beforeEach(async () => {
     const storeServiceSpy = jasmine.createSpyObj('StoreService', [
       'isProductAvailable',
-      'products',
+      'loadProducts'
     ]);
     const cartServiceSpy = jasmine.createSpyObj('CartService', ['addToCart']);
 
@@ -40,6 +40,7 @@ describe('ProductListComponent', () => {
       imports: [ProductListComponent],
     }).compileComponents();
 
+    storeServiceSpy.products = [{ ...mockProduct }];
     fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
     storeService = TestBed.inject(StoreService) as jasmine.SpyObj<StoreService>;
@@ -56,7 +57,7 @@ describe('ProductListComponent', () => {
       product: { ...mockProduct },
       quantity: 1,
     };
-    storeService.products.and.returnValue([{ ...mockProduct }]);
+
     storeService.isProductAvailable.and.returnValue(true);
 
     component.addToCart(addToCartEvent);
@@ -76,7 +77,7 @@ describe('ProductListComponent', () => {
       product: { ...mockProduct },
       quantity: 1,
     };
-    storeService.products.and.returnValue([{ ...mockProduct, availableAmount: 0 }]);
+
     storeService.isProductAvailable.and.returnValue(false);
     spyOn(console, 'log');
 

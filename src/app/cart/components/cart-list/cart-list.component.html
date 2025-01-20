@@ -1,8 +1,8 @@
-<section class="card rounded-md overflow-hidden">
+<section class="card rounded-md overflow-hidden" *ngIf="storeService.cart.length > 0">
   <p-dataview
     #dv
     [layout]="'list'"
-    [value]="cartService.cart()"
+    [value]="storeService.cart"
     class="rounded"
   >
     <ng-template #list let-products>

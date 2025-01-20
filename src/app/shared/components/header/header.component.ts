@@ -6,7 +6,7 @@ import { RippleModule } from 'primeng/ripple';
 import { BadgeModule } from 'primeng/badge';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
 
-import { CartService } from '../../../cart/services/cart.service';
+import { StoreService } from '../../services/store.service';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +15,7 @@ import { CartService } from '../../../cart/services/cart.service';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  constructor(readonly cartService: CartService) {}
+  constructor(readonly storeService: StoreService) {}
 
   menuItems = [
     {
@@ -25,10 +25,6 @@ export class HeaderComponent {
     {
       label: 'Products',
       routerLink: '/products',
-    },
-/*     {
-      label: 'Cart',
-      routerLink: '/cart',
-    }, */
+    }
   ];
 }

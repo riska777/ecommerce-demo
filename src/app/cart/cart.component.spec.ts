@@ -2,6 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CartComponent } from './cart.component';
 import { CartService } from './services/cart.service';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -17,7 +20,12 @@ describe('CartComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [CartComponent],
-      providers: [{ provide: CartService, useValue: cartServiceSpy }],
+      providers: [
+        provideAnimations(),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: CartService, useValue: cartServiceSpy },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CartComponent);
@@ -28,10 +36,5 @@ describe('CartComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should call reduceCartItemQuantity on cartService', () => {
-    component.reduceCartItemQuantity();
-    expect(cartService.reduceCartItemQuantity).toHaveBeenCalled();
   });
 });

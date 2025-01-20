@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 
 import { ButtonModule } from 'primeng/button';
 import { CartListComponent } from './components/cart-list/cart-list.component';
+import { StoreService } from '../shared/services/store.service';
 
 @Component({
   selector: 'app-cart',
@@ -12,13 +13,18 @@ import { CartListComponent } from './components/cart-list/cart-list.component';
   styleUrl: './cart.component.scss',
 })
 export class CartComponent {
-  constructor(readonly cartService: CartService) {}
+  constructor(
+    readonly cartService: CartService,
+    readonly storeService: StoreService
+  ) {
+    this.storeService.loadProducts();
+  }
 
   emptyCart(): void {
     this.cartService.clearCart();
   }
 
   reduceCartItemQuantity(): void {
-    this.cartService.reduceCartItemQuantity();
+    this.storeService.reduceCartItemQuantity();
   }
 }
